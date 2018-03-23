@@ -47,7 +47,7 @@ def run(songs)
   input = gets.chomp
   
   until input == "exit"
-    if input == help
+    if input == "help"
       help
     elsif input == "list"
       list(songs)

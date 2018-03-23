@@ -21,7 +21,6 @@ def help
 end
 
 def list(songs)
-  songs_array = []
   songs.each_with_index{|song, index| puts "#{index+1}. #{song}"}
 end
 

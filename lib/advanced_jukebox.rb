@@ -43,7 +43,6 @@ def play(my_songs)
   
   puts "Please enter a song name or number:"
   input = gets.chomp
-  binding.pry
   if my_songs.keys.include?(input)
     puts "Playing #{input}"
     system "open #{my_songs[input]}"

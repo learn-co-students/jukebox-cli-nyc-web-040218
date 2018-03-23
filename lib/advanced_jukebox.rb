@@ -11,6 +11,7 @@
 # "Blue" => '< path to this directory >/jukebox-cli/audio/Emerald-Park/06.mp3',
 # "Graduation Failed" => '< path to this directory >/jukebox-cli/audio/Emerald-Park/07.mp3'
 # }
+require 'pry'
 
 def help
   puts "I accept the following commands:
@@ -20,13 +21,14 @@ def help
 - exit : exits this program"
 end
 
-
-
 def list(my_songs)
   #this method is different! Collect the keys of the my_songs hash and 
   #list the songs by name
-  
-  
+  i = 1
+  my_songs.map do |titles, paths|
+    puts "#{i}. #{titles}"
+    i += 1
+  end
 end
 
 
@@ -39,12 +41,39 @@ def play(my_songs)
   #if it is, play the song using the system 'open <file path>' syntax
   #get the file path of the song by looking it up in the my_songs hash
   
+  puts "Please enter a song name or number:"
+  input = gets.chomp
+  binding.pry
+  if my_songs.keys.include?(input)
+    puts "Playing #{input}"
+    system "open #{my_songs[input]}"
+  elsif (1..7).include?(input.to_i)
+    puts "Playing #{my_songs.keys[input.to_i - 1]}"
+    system "open #{my_songs.values[input.to_i - 1]}"
+  else
+    puts "Invalid input, please try again"
+  end
 end
 
 def exit_jukebox
-  #this method is the same as in jukebox.rb
+  puts "Goodbye"
 end
 
 def run(my_songs)
-  #this method is the same as in jukebox.rb
+  help
+  puts "Please enter a command:"
+  input = gets.chomp
+  
+  until input == "exit"
+    if input == help
+      help
+    elsif input == "list"
+      list(songs)
+    elsif input == "play"
+      play(songs)
+    end
+  puts "Please enter a command:"
+  input = gets.chomp
+  end
+  exit_jukebox
 end

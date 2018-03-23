@@ -13,4 +13,5 @@ my_songs = {
 "Graduation Failed" => '/home/LaneMiller/jukebox-cli-nyc-web-040218/audio/Emerald-Park/07.mp3'
 }
 
+play(my_songs)
 run(my_songs)

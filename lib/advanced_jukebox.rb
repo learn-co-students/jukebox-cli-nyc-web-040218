@@ -11,35 +11,66 @@
 # "Blue" => '< path to this directory >/jukebox-cli/audio/Emerald-Park/06.mp3',
 # "Graduation Failed" => '< path to this directory >/jukebox-cli/audio/Emerald-Park/07.mp3'
 # }
+require 'pry'
 
 def help
-  #this method should be the same as in jukebox.rb
-
+  puts "I accept the following commands:
+- help : displays this help message
+- list : displays a list of songs you can play
+- play : lets you choose a song to play
+- exit : exits this program"
 end
 
-
-
 def list(my_songs)
-  #this method is different! Collect the keys of the my_songs hash and 
+  #this method is different! Collect the keys of the my_songs hash and
   #list the songs by name
+  i = 1
+  my_songs.map do |titles, paths|
+    puts "#{i}. #{titles}"
+    i += 1
+  end
 end
 
 
 def play(my_songs)
-  #this method is slightly different!
-  #you should still ask the user for input and collect their song choice
-  #this time, only allow user's to input a song name
-  #check to see if the name they give is in fact a key of the my_songs hash
-  #if it isn't, tell them their choice is invalid
-  #if it is, play the song using the system 'open <file path>' syntax
-  #get the file path of the song by looking it up in the my_songs hash
-  
+  puts "Please enter a song name or number:"
+  input = gets.chomp
+  if my_songs.keys.include?(input)
+    puts "Playing #{input}"
+    system "open #{my_songs[input]}"
+  elsif (1..7).include?(input.to_i)
+    puts "Playing #{my_songs.keys[input.to_i - 1]}"
+    system "open #{my_songs.values[input.to_i - 1]}"
+  elsif input == "shuffle" || input.include?("rand")
+    i = rand(1..7)
+    puts "Playing #{my_songs.keys[i]}"
+    system "open #{my_songs.values[i]}"
+  else
+    puts "Invalid input, please try again. Try 'help' for options"
+  end
 end
 
 def exit_jukebox
-  #this method is the same as in jukebox.rb
+  puts "Goodbye"
 end
 
 def run(my_songs)
-  #this method is the same as in jukebox.rb
+  help
+  puts "Please enter a command:"
+  input = gets.chomp
+
+  until input == "exit" || input == "quit"
+    if input == "help"
+      help
+    elsif input == "list" || input == "songs"
+      list(my_songs)
+    elsif input == "play"
+      play(my_songs)
+    else
+      puts "Invalid input, please try again. Try 'help' for options"
+    end
+  puts "Please enter a command:"
+  input = gets.chomp
+  end
+  exit_jukebox
 end
